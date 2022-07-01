@@ -1,6 +1,16 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import FeedbackOptions from './FeedbackOptions'
+import Statistics from './Statistics'
+import Notification from './Notification'
+import SectionTitle from './SectionTitle'
 
 class Feedback extends React.Component {
+    static propTypes = {
+        good: PropTypes.number,
+        neutral: PropTypes.number,
+        bad: PropTypes.number
+    }
     state = {
         good: 0,
         neutral: 0,
@@ -35,21 +45,23 @@ class Feedback extends React.Component {
     render () {
         return (
             <div>
-                <div>
-                <h3>Please leave feedback</h3>
-                <button onClick={this.handleGoodIncrement}>good</button>
-                <button onClick={this.handleNeutralIncrement}>neutral</button>
-                <button onClick={this.handleBadIncrement}>bad</button></div>
-                <div>
-                <h3>Statistics</h3>
-                {this.state.good > 0 && <p>Good: {this.state.good}</p>}
-                {this.state.neutral > 0 && <p>Neutral: {this.state.neutral}</p>}
-                {this.state.bad > 0 && <p>Bad: {this.state.bad}</p>}
-                {this.countTotalFeedback() > 0 && <p>Total: {this.countTotalFeedback()}</p>}
-                {this.countPositiveFeedbackPercentage() > 0 && <p>Positive feedback: {this.countPositiveFeedbackPercentage()} %</p>}
-                {this.countTotalFeedback() === 0 && <p>There is no feedback</p>}
-                </div>
+                <SectionTitle title="Please leave feedback">
+                <FeedbackOptions 
+                onGood={this.handleGoodIncrement} 
+                onNeutral={this.handleNeutralIncrement} 
+                onBad={this.handleBadIncrement}
+                />
+                </SectionTitle>
+                <SectionTitle title="Statistics">
+                <Statistics 
+                onGood={this.state.good} 
+                onNeutral={this.state.neutral}
+                onBad={this.state.bad}
+                />
+                </SectionTitle>
+                {this.countTotalFeedback() === 0 && <Notification message="There is no feedback"></Notification>}
             </div>
+            
         )
     }
 
