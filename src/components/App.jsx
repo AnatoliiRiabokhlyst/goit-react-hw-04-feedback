@@ -1,3 +1,9 @@
+import Feedback from './Feedback'
+
+
+
+
+
 export const App = () => {
   return (
     <div
@@ -6,11 +12,11 @@ export const App = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        fontSize: 40,
+        fontSize: 20,
         color: '#010101'
       }}
     >
-      React homework template
+      <Feedback/>
     </div>
   );
 };
