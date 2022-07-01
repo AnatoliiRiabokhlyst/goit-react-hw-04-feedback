@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from 'prop-types'
+import s from './FeedbackOptions.module.css'
 
 export default function FeedbackOptions ({onGood, onNeutral, onBad}) {
     return (<div>
-        <button onClick={onGood}>good</button>
-        <button onClick={onNeutral}>neutral</button>
-        <button onClick={onBad}>bad</button>
+        <button className={s.btn} onClick={onGood}>good</button>
+        <button className={s.btn} onClick={onNeutral}>neutral</button>
+        <button className={s.btn} onClick={onBad}>bad</button>
         </div>)
 };
 FeedbackOptions.propTypes = {
