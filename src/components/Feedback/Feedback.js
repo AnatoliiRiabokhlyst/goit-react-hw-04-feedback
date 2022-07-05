@@ -16,27 +16,10 @@ class Feedback extends React.Component {
         neutral: 0,
         bad: 0
     }
-    handleGoodIncrement = () => {
-    this.setState((prevState) => {
-    return {
-        good: prevState.good + 1
+        increaseFeedback = event => {
+        const feedback = event.target.dataset.state
+        this.setState((prevState) => ({ [feedback]: prevState[feedback] += 1 }))
     }
-})
-    }
-    handleNeutralIncrement = () => {
-        this.setState((prevState) => {
-        return {
-            neutral: prevState.neutral + 1
-        }
-    })
-        }
-        handleBadIncrement = () => {
-            this.setState(prevState => {
-            return {
-                bad: prevState.bad + 1
-            }
-        })
-            }
             countTotalFeedback = () => {
                 return this.state.good + this.state.neutral + this.state.bad
             }
@@ -46,11 +29,7 @@ class Feedback extends React.Component {
         return (
             <div>
                 <SectionTitle title="Please leave feedback">
-                <FeedbackOptions 
-                onGood={this.handleGoodIncrement} 
-                onNeutral={this.handleNeutralIncrement} 
-                onBad={this.handleBadIncrement}
-                />
+                <FeedbackOptions options={Object.keys(this.state)} onLeaveFeedback={this.increaseFeedback} />
                 </SectionTitle>
                 <SectionTitle title="Statistics">
                 <Statistics 

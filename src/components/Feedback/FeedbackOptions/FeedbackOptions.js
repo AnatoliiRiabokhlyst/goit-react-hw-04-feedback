@@ -2,15 +2,15 @@ import React from "react";
 import PropTypes from 'prop-types'
 import s from './FeedbackOptions.module.css'
 
-export default function FeedbackOptions ({onGood, onNeutral, onBad}) {
-    return (<div>
-        <button className={s.btn} onClick={onGood}>good</button>
-        <button className={s.btn} onClick={onNeutral}>neutral</button>
-        <button className={s.btn} onClick={onBad}>bad</button>
-        </div>)
-};
-FeedbackOptions.propTypes = {
-    onGood: PropTypes.func,
-    onNeutral: PropTypes.func,
-    onBad: PropTypes.func
+function FeedbackOptions({ options, onLeaveFeedback }) {
+    
+    return <ul className={s.btn_list}>
+        {options.map(option => (<li key={option}><button type="button" className={s.btn} data-state={option} onClick={onLeaveFeedback}>{option}</button></li>))
+        }
+    </ul>   
 }
+FeedbackOptions.propTypes = {
+    options: PropTypes.array.isRequired,  
+    onLeaveFeedback:PropTypes.func.isRequired,
+};
+export default FeedbackOptions;
