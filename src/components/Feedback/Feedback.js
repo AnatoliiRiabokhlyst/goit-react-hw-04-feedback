@@ -1,48 +1,61 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import FeedbackOptions from './FeedbackOptions'
-import Statistics from './Statistics'
-import Notification from './Notification'
-import SectionTitle from './SectionTitle'
+import { useState } from 'react';
+import FeedbackOptions from './FeedbackOptions';
+import Statistics from './Statistics';
+import Notification from './Notification';
+import SectionTitle from './SectionTitle';
 
-class Feedback extends React.Component {
-    static propTypes = {
-        good: PropTypes.number,
-        neutral: PropTypes.number,
-        bad: PropTypes.number
-    }
-    state = {
-        good: 0,
-        neutral: 0,
-        bad: 0
-    }
-        increaseFeedback = event => {
-        const feedback = event.target.dataset.state
-        this.setState((prevState) => ({ [feedback]: prevState[feedback] += 1 }))
-    }
-            countTotalFeedback = () => {
-                return this.state.good + this.state.neutral + this.state.bad
-            }
-            countPositiveFeedbackPercentage = () => {
-                return ((this.state.good / this.countTotalFeedback()) * 100).toFixed(0)}
-    render () {
-        return (
-            <div>
-                <SectionTitle title="Please leave feedback">
-                <FeedbackOptions options={Object.keys(this.state)} onLeaveFeedback={this.increaseFeedback} />
-                </SectionTitle>
-                <SectionTitle title="Statistics">
-                <Statistics 
-                onGood={this.state.good} 
-                onNeutral={this.state.neutral}
-                onBad={this.state.bad}
-                />
-                </SectionTitle>
-                {this.countTotalFeedback() === 0 && <Notification message="There is no feedback"></Notification>}
-            </div>
-            
-        )
-    }
+function Feedback() {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
+  const total = good + bad + neutral;
+
+  const increaseFeedback = event => {
+    const feedback = event.target.dataset.state;
+    switch (feedback) {
+      case 'good':
+        setGood(prevState => prevState + 1);
+        return;
+      case 'neutral':
+        setNeutral(prevState => prevState + 1);
+        return;
+      case 'bad':
+        setBad(prevState => prevState + 1);
+        return;
+
+      default:
+        return;
+    }
+  };
+
+  function calculatePositivePercentage() {
+    if (total > 0) {
+      return Math.round((good / total) * 100);
+    }
+  }
+  return (
+    <div>
+      <SectionTitle title="Please leave feedback">
+        <FeedbackOptions
+          options={['good', 'neutral', 'bad']}
+          onLeaveFeedback={increaseFeedback}
+        />
+      </SectionTitle>
+      <SectionTitle title="Statistics">
+        <Statistics
+          onGood={good}
+          onNeutral={neutral}
+          onBad={bad}
+          total={total}
+          positivePercentage={calculatePositivePercentage()}
+        />
+      </SectionTitle>
+      {total === 0 && (
+        <Notification message="There is no feedback"></Notification>
+      )}
+    </div>
+  );
 }
-export default Feedback
+
+export default Feedback;
